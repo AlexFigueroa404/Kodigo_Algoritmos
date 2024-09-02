@@ -66,8 +66,15 @@ public class Sort {
 
     }
 
-    public void mergeSort() {
-
+    public void mergeSort(int[] arr, int lowerBound, int upperBound) {
+        if (lowerBound == upperBound) {
+            return;
+        } else {
+            int mid = lowerBound + (upperBound - lowerBound) / 2;
+            mergeSort(arr, lowerBound, mid);
+            mergeSort(arr, mid + 1, upperBound);
+            merge(arr, lowerBound, mid, upperBound); // metodo auxiliar para mezclar los arreglos
+        }
     }
 
     // metodo auxiliar para intercambiar dos elementos
@@ -75,6 +82,37 @@ public class Sort {
         int temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
+
+    }
+
+    private void merge(int[] arr, int lowerBound, int mid, int upperBound) {
+        int[] merged = new int[upperBound - lowerBound + 1];
+        int indexA = lowerBound;
+        int indexB = mid + 1;
+        int indexMerged = 0;
+
+        while (indexA <= mid && indexB <= upperBound) {
+            if (arr[indexA] < arr[indexB]) {
+                merged[indexMerged++] = arr[indexA++]; // se copia el valor de A y se incrementa el índice usando post-incremento
+            } else {
+                merged[indexMerged++] = arr[indexB++];
+            }
+        }
+
+        while (indexA <= mid) {
+            merged[indexMerged++] = arr[indexA++];
+        }
+
+        while (indexB <= upperBound) {
+            merged[indexMerged++] = arr[indexB++];
+        }
+
+        // copiar valores de merged al arreglo original
+
+        int j = lowerBound;
+        for (int i = 0; i < merged.length; i++) {
+            arr[j++] = merged[i];
+        }
 
     }
 }
